@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>&lt;model-viewer&gt; example</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="demo-styles.css">
+
+  <!-- The following libraries and polyfills are recommended to maximize browser support -->
+  <!-- NOTE: you must adjust the paths as appropriate for your project -->
+
+  <!-- 💁 OPTIONAL: The :focus-visible polyfill removes the focus ring for some input types -->
+  <script src="https://unpkg.com/focus-visible@5.0.2/dist/focus-visible.js" defer></script>
+
+  <style>
+    /* Styles for the video popup */
+    .video-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .video-popup video {
+      max-width: 80%;
+      max-height: 80%;
+      background: transparent;
+    }
+  </style>
+</head>
+<body>
+  <div id="card">
+    <!-- All you need to put beautiful, interactive 3D content on your site: <button onclick="takeScreenshot()">Take Picture</button> -->
+    <model-viewer id="viewer" camera-controls touch-action="pan-y" autoplay ar ar-modes="webxr scene-viewer" scale="0.1 0.1 0.1" shadow-intensity="1" src="https://cdn.glitch.me/e3307a13-bbf3-4947-bcc5-6268a2f54810/final.glb?v=1682007567465" alt="An animated 3D model of a robot">
+      <div class="video-popup" id="videoPopup">
+        <video id="myVideo" controls>
+          <source src="https://cdn.glitch.global/e3307a13-bbf3-4947-bcc5-6268a2f54810/pil0001-0060.mp4?v=1685281354440" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </model-viewer>
+  </div>
+
+
+
+  <footer>
+
+  </footer>
+
+  <!-- 💁 Include both scripts below to support all browsers! -->
+
+  <!-- Loads <model-viewer> for modern browsers: -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+  <script>
+    var videoPopup = document.getElementById("videoPopup");
+    var video = document.getElementById("myVideo");
+    var modelViewer = document.getElementById("viewer");
+
+    modelViewer.addEventListener("click", function() {
+      videoPopup.style.display = "flex";
+      video.play();
+    });
+
+    videoPopup.addEventListener("click", function(event) {
+      if (event.target === videoPopup) {
+        videoPopup.style.display = "none";
+        video.pause();
+      }
+    });
+
+    window.addEventListener("click", function(event) {
+      if (event.target !== video && event.target !== modelViewer) {
+        videoPopup.style.display = "none";
+        video.pause();
+      }
+    });
+  </script>
+</body>
+</html>
